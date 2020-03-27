@@ -1,13 +1,11 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import ver06.PhoneBookManager;
+import ver07.PhoneBookManager;
 import ver05.data;
 import ver06.MenuSelectException;
 
-
-
-public class PhoneBookVer06 {
+public class PhoneBookVer07 {
 
 	public static void printMenu() {// 메뉴출력
 		System.out.println("메뉴를 선택하세요");
@@ -21,7 +19,7 @@ public class PhoneBookVer06 {
 
 	public static void main(String[] args) throws MenuSelectException{
 
-		PhoneBookManager phonebookmanager = new PhoneBookManager(100);
+		PhoneBookManager phonebookmanager = new PhoneBookManager();
 
 		while (true) {
 			// 메뉴출력을 위한 메소드호출
@@ -38,7 +36,6 @@ public class PhoneBookVer06 {
 				}
 				catch (MenuSelectException e) {
 					e.printStackTrace();
-					
 				}
 			}
 			switch (choice) {

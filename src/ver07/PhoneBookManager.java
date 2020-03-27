@@ -1,14 +1,22 @@
-package ver04;
+package ver07;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Scanner;
 
+/*
+ 7단계[컬렉션] : PhoneBookVer07.java
+동명이인이 있다고 가정했을때 3단계에서 진행한 배열을 이용해서는 구조적으로 중복을 막을수 없다.
+이번에는 중복 저장을 허용하지 않는 HashSet<E> 클래스를 대상으로 저장이 되도록 해보자. 
+“이름이 같으면 다른 정보가 달라도 동일한 객체(인스턴스)로 간주한다”
+즉 동일한 이름을 입력하는 경우라면 덮어쓸지 여부를 물어본후 처리한다.
+ */
 public class PhoneBookManager {
-
-	private PhoneInfo[] myInfo;
+	
+	HashSet<PhoneInfo>myInfo; 
 	private int numOfFriends;
 
-	public PhoneBookManager(int num) {// 생성자
-		myInfo = new PhoneInfo[num];
-		numOfFriends = 0;
+	public PhoneBookManager() {// 생성자
+		myInfo = new HashSet<PhoneInfo>();
 	}
 
 	public void dataInput() {// 1.입력
@@ -23,51 +31,54 @@ public class PhoneBookManager {
 			int num=scan.nextInt();
 			
 			switch (num) {
-			case 1:
+			case select.NOM:
 				System.out.print("이름:");name = scan.next();
 				System.out.print("전화번호:");phoneNumber = scan.next();
 				PhoneInfo commonInfo = 
 						new PhoneInfo(name, phoneNumber);
-				myInfo[numOfFriends++] = commonInfo;
+				 myInfo.add(commonInfo);
 
 				break;
-			case 2:
+			case select.SCL:
 				System.out.print("이름:");name = scan.next();
 				System.out.print("전화번호:");phoneNumber = scan.next();
 				System.out.print("전공:");major=scan.next();
 				System.out.print("학년:");grade=scan.nextInt();
 				PhoneSchoolInfo schoolInfo = 
 						new PhoneSchoolInfo(name,phoneNumber,major,grade);
-				myInfo[numOfFriends++] = schoolInfo;
+				myInfo.add(schoolInfo);
 
 				break;
-			case 3:
+			case select.COM:
 				System.out.print("이름:");name = scan.next();
 				System.out.print("전화번호:");phoneNumber = scan.next();
 				System.out.print("회사명:");company=scan.next();
 				PhoneCompanyInfo companyInfo = 
 						new PhoneCompanyInfo(name,phoneNumber,company);
-				myInfo[numOfFriends++] = companyInfo;
+				myInfo.add(companyInfo);
 
 			}
-	}////end of dataInput
+	}//// end of dataInput
 
 	public void dataSearch() {// 2.검색
 		Scanner scan = new Scanner(System.in);
 		System.out.print("검색할 이름을 입력하세요:");
 		String searchName = scan.nextLine();
 
-		for (int i = 0; i < numOfFriends; i++) {
-			System.out.println("검색중인이름:" + myInfo[i].name);
-
-			// 검색할 이름과 객체의 이름이 일치하는 경우 모든정보를 출력함
-			if (searchName.compareTo(myInfo[i].name) == 0) {
-				myInfo[i].showPhoneInfo();
-				System.out.println("**귀하가 요청하는 정보를 찾았습니다.**");
+		boolean searchFlag = false;
+		Iterator<PhoneInfo> itr = myInfo.iterator();
+		while (itr.hasNext()) {
+			PhoneInfo phoneInfo = (PhoneInfo) itr.next();
+			if(searchName.equals(phoneInfo.name)) {
+				searchFlag = true;
+				phoneInfo.showPhoneInfo();
 			}
-			else {
-				System.out.println("검색할 자료가 없습니다.");
-			}
+		}
+		
+		if(searchFlag ==true) {
+			System.out.println("요청하신 정보를 찾았습니다");
+		}else {
+			System.out.println("검색할 자료가 없습니다.");
 		}
 	}//// end of dataSearch
 
@@ -76,31 +87,19 @@ public class PhoneBookManager {
 		System.out.print("삭제할 이름을 입력하세요:");
 		String deleteName = scan.nextLine();
 
-		int deleteIndex = -1;
-
-		for (int i = 0; i < numOfFriends; i++) {
-			if (deleteName.compareTo(myInfo[i].name) == 0) {
-				myInfo[i] = null;
-				deleteIndex = i;
-				numOfFriends--;
+		Iterator<PhoneInfo> itr = myInfo.iterator();
+		while (itr.hasNext()) {
+			PhoneInfo phoneInfo = (PhoneInfo) itr.next();
+			if(deleteName.equals(phoneInfo.name)) {
+				itr.remove();
 			}
-		}
-
-		if (deleteIndex == -1) {
-			System.out.println("==삭제된 데이터가 없습니다==");
-		} else {
-			for (int i = deleteIndex; i < numOfFriends; i++) {
-				myInfo[i] = myInfo[i + 1];
-			}
-			System.out.println("==데이터(" + deleteIndex + "번)가 삭제되었습니다==");
 		}
 	}
 
 	public void dataAllShow() {// 4.주소록전체출력
-		for (int i = 0; i < numOfFriends; i++) {
-			myInfo[i].showPhoneInfo();
+		
+		for (PhoneInfo phoneInfo : myInfo) {
+			phoneInfo.showPhoneInfo();
 		}
-
-		System.out.println("==전체정보가 출력되었습니다==");
 	}
 }

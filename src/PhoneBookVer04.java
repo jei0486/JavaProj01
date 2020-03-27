@@ -8,13 +8,11 @@ public class PhoneBookVer04 {
 
 	public static void printMenu() {// 메뉴출력
 		System.out.println("메뉴를 선택하세요");
-		System.out.println("1.일반 데이터 입력");
-		System.out.println("2.동창 데이터 입력");
-		System.out.println("3.회사 데이터 입력");
-		System.out.println("4.데이터 검색");
-		System.out.println("5.데이터 삭제");
-		System.out.println("6.주소록 출력");
-		System.out.println("7.프로그램 종료");
+		System.out.println("1.데이터 입력");
+		System.out.println("2.데이터 검색");
+		System.out.println("3.데이터 삭제");
+		System.out.println("4.주소록 출력");
+		System.out.println("5.프로그램 종료");
 		System.out.print("메뉴선택>>");
 	}
 
@@ -30,22 +28,22 @@ public class PhoneBookVer04 {
 			int choice = scan.nextInt();
 
 			switch (choice) {
-			case 1: case 2: case 3:
-				phonebookmanager.dataInput(choice);
+			case 1: 
+				phonebookmanager.dataInput();
 				break;
-			case 4:
+			case 2:
 				// 친구정보검색
 				phonebookmanager.dataSearch();
 				break;
-			case 5:
+			case 3:
 				// 친구정보삭제
 				phonebookmanager.dataDelete();
 				break;
-			case 6:
+			case 4:
 				// 전체정보출력
 				phonebookmanager.dataAllShow();
 				break;
-			case 7:
+			case 5:
 				System.out.println("프로그램을 종료합니다.");
 				return;// main함수의 종료는 프로그램 종료로 이어진다.
 			}
