@@ -1,4 +1,8 @@
-package ver07;
+package ver08;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -54,9 +58,6 @@ public class PhoneBookManager {
 				PhoneInfo commonInfo = 
 						new PhoneInfo(name, phoneNumber);
 				myInfo.add(commonInfo);
-				
-				
-				 
 
 				break;
 			case select.SCL:
@@ -159,4 +160,44 @@ public class PhoneBookManager {
 			phoneInfo.showPhoneInfo();
 		}
 	}
+
+	public void saveFriendInfo() {
+
+		ObjectOutputStream out = null;
+
+		try {
+			out = new ObjectOutputStream(new FileOutputStream("src/ver08/PhoneBookManager.obj"));
+
+			out.writeObject(myInfo);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				out.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+
+	public void readFriendInfo() {
+		ObjectInputStream in = null;
+		try {
+			
+			in = new ObjectInputStream(new FileInputStream("src/ver08/PhoneBookManager.obj"));
+			myInfo = (HashSet<PhoneInfo>) in.readObject();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				in.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+	}
+	
 }
